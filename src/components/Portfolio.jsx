@@ -74,7 +74,7 @@ export default function Portfolio() {
                   A high-performance e-commerce engine built for global scale. We architected a system capable of handling 50k+ concurrent transactions with sub-second latency.
                 </p>
                 <div style={{ display: 'flex', gap: 'var(--spacing-sm)', flexWrap: 'wrap', marginTop: 'var(--spacing-md)' }}>
-                  {['React', 'Spring Boot', 'Postgres database'].map(tech => (
+                  {['React.Js', 'Spring Boot', 'Postgres database'].map(tech => (
                     <span key={tech} className="label-sm" style={{ border: '1px solid var(--outline-variant)', borderRadius: 'var(--radius-full)', padding: 'var(--spacing-sm) var(--spacing-md)', color: 'var(--on-surface-variant)' }}>{tech}</span>
                   ))}
                 </div>

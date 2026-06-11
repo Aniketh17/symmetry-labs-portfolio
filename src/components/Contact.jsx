@@ -108,7 +108,7 @@ export default function Contact() {
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--spacing-md)' }}>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <label className="label-sm" style={{ color: 'var(--on-surface-variant)', marginBottom: 'var(--spacing-xs)' }}>Full Name / Architect</label>
+                <label className="label-sm" style={{ color: 'var(--on-surface-variant)', marginBottom: 'var(--spacing-xs)' }}>Full Name</label>
                 <input className="input-field" name="name" value={formData.name} onChange={handleChange} placeholder="Jane Doe" type="text" required />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>

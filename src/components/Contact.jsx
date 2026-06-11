@@ -185,7 +185,11 @@ export default function Contact() {
                 <button 
                   key={tax} type="button" 
                   className={`btn-selectable ${formData.taxonomy === tax ? 'selected' : ''}`}
-                  onClick={() => { handleSelect('taxonomy', tax); setErrors(prev => ({ ...prev, taxonomy: null, customTaxonomy: null })); }}
+                  onClick={() => { 
+                    handleSelect('taxonomy', tax); 
+                    setFormData(prev => ({ ...prev, customTaxonomy: '' }));
+                    setErrors(prev => ({ ...prev, taxonomy: null, customTaxonomy: null })); 
+                  }}
                 >{tax}</button>
               ))}
               <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
@@ -207,18 +211,22 @@ export default function Contact() {
             {errors.taxonomy && <span style={{ color: '#ff5c5c', fontSize: '12px', display: 'block', marginTop: '8px' }}>{errors.taxonomy}</span>}
           </div>
 
-          {/* Resource Allocation */}
+          {/* Budget Allocation */}
           <div style={{ borderBottom: '1px solid var(--outline-variant)', paddingBottom: 'var(--spacing-lg)' }}>
             <h3 className="headline-md" style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', marginBottom: 'var(--spacing-md)' }}>
               <span className="material-symbols-outlined" style={{ color: 'var(--secondary)' }}>account_balance</span>
-              Resource Allocation
+              Budget Allocation
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 'var(--spacing-sm)' }}>
               {allocations.map(alloc => (
                 <button 
                   key={alloc} type="button" 
                   className={`btn-selectable ${formData.allocation === alloc ? 'selected' : ''}`}
-                  onClick={() => { handleSelect('allocation', alloc); setErrors(prev => ({ ...prev, allocation: null, customAllocation: null })); }}
+                  onClick={() => { 
+                    handleSelect('allocation', alloc); 
+                    setFormData(prev => ({ ...prev, customAllocation: '' }));
+                    setErrors(prev => ({ ...prev, allocation: null, customAllocation: null })); 
+                  }}
                 >{alloc}</button>
               ))}
             </div>
@@ -242,11 +250,11 @@ export default function Contact() {
             {errors.allocation && <span style={{ color: '#ff5c5c', fontSize: '12px', display: 'block', marginTop: '8px' }}>{errors.allocation}</span>}
           </div>
 
-          {/* Technical Requirements */}
+          {/* Requirements */}
           <div>
             <h3 className="headline-md" style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', marginBottom: 'var(--spacing-md)' }}>
               <span className="material-symbols-outlined" style={{ color: 'var(--secondary)' }}>edit_document</span>
-              Technical Requirements & Blueprint
+              Requirements & Blueprint
             </h3>
             <textarea 
               className={`input-field ${errors.details ? 'error-border' : ''}`} 

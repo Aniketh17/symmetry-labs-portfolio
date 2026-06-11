@@ -15,8 +15,8 @@ export default function Technologies() {
     visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: [0.5, 0, 0, 1] } }
   };
 
-  const TechItem = ({ name, iconName }) => {
-    const iconUrl = `https://cdn.simpleicons.org/${iconName}/a04115`;
+  const TechItem = ({ name, iconName, customSvgPath }) => {
+    const iconUrl = iconName ? `https://cdn.simpleicons.org/${iconName}/a04115` : null;
     
     return (
       <motion.div 
@@ -38,12 +38,18 @@ export default function Technologies() {
           flexShrink: 0
         }}
       >
-        <img 
-          src={iconUrl} 
-          alt={name} 
-          style={{ width: '40px', height: '40px', marginBottom: 'var(--spacing-xs)', objectFit: 'contain' }} 
-          onError={(e) => { e.target.style.display = 'none'; }}
-        />
+        {customSvgPath ? (
+          <svg viewBox="0 0 24 24" style={{ width: '40px', height: '40px', marginBottom: 'var(--spacing-xs)', fill: 'var(--secondary)' }}>
+            <path d={customSvgPath} />
+          </svg>
+        ) : (
+          <img 
+            src={iconUrl} 
+            alt={name} 
+            style={{ width: '40px', height: '40px', marginBottom: 'var(--spacing-xs)', objectFit: 'contain' }} 
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+        )}
         <span className="label-sm" style={{ color: 'var(--on-surface-variant)', textAlign: 'center' }}>{name}</span>
       </motion.div>
     );
@@ -79,7 +85,7 @@ export default function Technologies() {
       >
         {/* Frontend */}
         <TechItem name="HTML5" iconName="html5" />
-        <TechItem name="CSS3" iconName="css3" />
+        <TechItem name="CSS3" customSvgPath="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm17.09 4.413L5.41 4.41l.213 2.622 10.125.002-.255 2.716h-9.64l.24 2.573h9.141l-.4 5.45-6.66 1.8-6.663-1.8-.195-2.594H3.26l.28 4.652L11.974 21.56l8.48-2.315.88-10.428.002-.002.454-4.402z" />
         <TechItem name="React" iconName="react" />
         
         {/* Backend */}

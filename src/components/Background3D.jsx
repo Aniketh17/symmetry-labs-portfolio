@@ -15,7 +15,7 @@ function AbstractShape({ position, color, speed, scale, type }) {
   });
 
   return (
-    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+    <Float speed={1} rotationIntensity={0.5} floatIntensity={1}>
       <mesh ref={meshRef} position={position} scale={scale}>
         {type === 'icosahedron' && <icosahedronGeometry args={[1, 0]} />}
         {type === 'torus' && <torusGeometry args={[1, 0.4, 16, 32]} />}
@@ -34,7 +34,7 @@ function AbstractShape({ position, color, speed, scale, type }) {
 
 export default function Background3D() {
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 0, opacity: 0.8, pointerEvents: 'none' }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 0, opacity: 0.25, pointerEvents: 'none' }}>
       <Canvas 
         camera={{ position: [0, 0, 10], fov: 45 }}
         gl={{ powerPreference: "default", antialias: true, alpha: true }}
@@ -44,10 +44,10 @@ export default function Background3D() {
         <directionalLight position={[-10, -10, -5]} intensity={1.5} color="#e27243" />
         
         {/* Soft, warm terracotta and beige abstract shapes using lightweight standard materials */}
-        <AbstractShape position={[-4, 2, -2]} color="#e27243" speed={0.4} scale={1.2} type="torus" />
-        <AbstractShape position={[5, -2, -4]} color="#fdf9e9" speed={0.3} scale={1.5} type="icosahedron" />
-        <AbstractShape position={[-5, -4, -3]} color="#b35b36" speed={0.2} scale={1.8} type="octahedron" />
-        <AbstractShape position={[4, 4, -5]} color="#ddd9d7" speed={0.5} scale={1.4} type="torus" />
+        <AbstractShape position={[-4, 2, -2]} color="#e27243" speed={0.2} scale={0.8} type="torus" />
+        <AbstractShape position={[5, -2, -4]} color="#fdf9e9" speed={0.15} scale={1} type="icosahedron" />
+        <AbstractShape position={[-5, -4, -3]} color="#b35b36" speed={0.1} scale={1.2} type="octahedron" />
+        <AbstractShape position={[4, 4, -5]} color="#ddd9d7" speed={0.25} scale={1} type="torus" />
 
         <Environment preset="studio" />
       </Canvas>

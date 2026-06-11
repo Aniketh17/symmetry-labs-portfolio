@@ -81,7 +81,7 @@ export default function Contact() {
         >
           <h2 className="headline-lg" style={{ marginBottom: 'var(--spacing-md)' }}>Initiate Project</h2>
           <p className="body-lg" style={{ color: 'var(--on-surface-variant)', maxWidth: '600px', margin: '0 auto' }}>
-            Tell us about your architectural needs and structural requirements. We'll outline a blueprint for success.
+            Let's build something exceptional. Tell us what you're envisioning.
           </p>
         </motion.div>
 
@@ -104,7 +104,7 @@ export default function Contact() {
           <div style={{ borderBottom: '1px solid var(--outline-variant)', paddingBottom: 'var(--spacing-lg)' }}>
             <h3 className="headline-md" style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', marginBottom: 'var(--spacing-md)' }}>
               <span className="material-symbols-outlined" style={{ color: 'var(--secondary)' }}>person</span>
-              Identity & Coordinates
+              Identity
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--spacing-md)' }}>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -140,7 +140,7 @@ export default function Contact() {
                 type="text" 
                 name="customTaxonomy"
                 value={formData.customTaxonomy}
-                onChange={(e) => { handleChange(e); handleSelect('taxonomy', 'Other'); }}
+                onChange={(e) => setFormData(prev => ({ ...prev, customTaxonomy: e.target.value, taxonomy: 'Other' }))}
               />
             </div>
           </div>
@@ -169,7 +169,7 @@ export default function Contact() {
                 type="text" 
                 name="customAllocation"
                 value={formData.customAllocation}
-                onChange={(e) => { handleChange(e); handleSelect('allocation', 'Custom'); }}
+                onChange={(e) => setFormData(prev => ({ ...prev, customAllocation: e.target.value, allocation: 'Custom' }))}
               />
             </div>
           </div>

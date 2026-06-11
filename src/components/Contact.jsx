@@ -13,9 +13,45 @@ export default function Contact() {
   });
   
   const [status, setStatus] = useState('idle'); // idle, submitting, success, error
+  const [errors, setErrors] = useState({});
 
   const taxonomies = ['Digital Platform', 'E-Commerce Ecosystem', 'Corporate Identity Site', 'Web Application'];
   const allocations = ['$0 - $5k', '$5k - $15k', '$15k - $30k', '$30k+'];
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = "Name is required.";
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email || !emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address.";
+    }
+
+    if (!formData.taxonomy) {
+      newErrors.taxonomy = "Please select a project type.";
+    } else if (formData.taxonomy === 'Other' && !formData.customTaxonomy.trim()) {
+      newErrors.customTaxonomy = "Please specify your custom project type.";
+    }
+
+    if (!formData.allocation) {
+      newErrors.allocation = "Please select a budget allocation.";
+    } else if (formData.allocation === 'Custom') {
+      if (!formData.customAllocation.trim()) {
+        newErrors.customAllocation = "Please specify your custom budget amount.";
+      } else {
+        // Remove commas and decimals to check if it's a valid number string
+        const cleanAmount = formData.customAllocation.replace(/[,.]/g, '').trim();
+        if (!/^\d+$/.test(cleanAmount)) {
+          newErrors.customAllocation = "Budget amount must contain only numbers.";
+        }
+      }
+    }
+
+    if (!formData.details.trim()) newErrors.details = "Project details are required.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,6 +63,8 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+    
     setStatus('submitting');
 
     try {
@@ -66,6 +104,7 @@ export default function Contact() {
     setFormData({
       name: '', email: '', taxonomy: '', customTaxonomy: '', allocation: '', customAllocation: '', details: ''
     });
+    setErrors({});
     setStatus('idle');
   };
 
@@ -109,11 +148,13 @@ export default function Contact() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--spacing-md)' }}>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <label className="label-sm" style={{ color: 'var(--on-surface-variant)', marginBottom: 'var(--spacing-xs)' }}>Full Name</label>
-                <input className="input-field" name="name" value={formData.name} onChange={handleChange} placeholder="Jane Doe" type="text" required />
+                <input className={`input-field ${errors.name ? 'error-border' : ''}`} name="name" value={formData.name} onChange={handleChange} placeholder="Jane Doe" type="text" />
+                {errors.name && <span style={{ color: '#ff5c5c', fontSize: '12px', marginTop: '4px' }}>{errors.name}</span>}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <label className="label-sm" style={{ color: 'var(--on-surface-variant)', marginBottom: 'var(--spacing-xs)' }}>Email Address</label>
-                <input className="input-field" name="email" value={formData.email} onChange={handleChange} placeholder="jane@studio.com" type="email" required />
+                <input className={`input-field ${errors.email ? 'error-border' : ''}`} name="email" value={formData.email} onChange={handleChange} placeholder="jane@studio.com" type="text" />
+                {errors.email && <span style={{ color: '#ff5c5c', fontSize: '12px', marginTop: '4px' }}>{errors.email}</span>}
               </div>
             </div>
           </div>
@@ -130,19 +171,26 @@ export default function Contact() {
                 <button 
                   key={tax} type="button" 
                   className={`btn-selectable ${formData.taxonomy === tax ? 'selected' : ''}`}
-                  onClick={() => handleSelect('taxonomy', tax)}
+                  onClick={() => { handleSelect('taxonomy', tax); setErrors(prev => ({ ...prev, taxonomy: null, customTaxonomy: null })); }}
                 >{tax}</button>
               ))}
-              <input 
-                className="input-field" 
-                style={{ flexGrow: 1, minWidth: '150px', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', borderRadius: 0 }}
-                placeholder="Other / Custom Type..." 
-                type="text" 
-                name="customTaxonomy"
-                value={formData.customTaxonomy}
-                onChange={(e) => setFormData(prev => ({ ...prev, customTaxonomy: e.target.value, taxonomy: 'Other' }))}
-              />
+              <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                <input 
+                  className={`input-field ${errors.customTaxonomy ? 'error-border' : ''}`} 
+                  style={{ minWidth: '150px', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', borderRadius: 0 }}
+                  placeholder="Other / Custom Type..." 
+                  type="text" 
+                  name="customTaxonomy"
+                  value={formData.customTaxonomy}
+                  onChange={(e) => { 
+                    setFormData(prev => ({ ...prev, customTaxonomy: e.target.value, taxonomy: 'Other' }));
+                    setErrors(prev => ({ ...prev, taxonomy: null, customTaxonomy: null }));
+                  }}
+                />
+                {errors.customTaxonomy && <span style={{ color: '#ff5c5c', fontSize: '12px', marginTop: '4px' }}>{errors.customTaxonomy}</span>}
+              </div>
             </div>
+            {errors.taxonomy && <span style={{ color: '#ff5c5c', fontSize: '12px', display: 'block', marginTop: '8px' }}>{errors.taxonomy}</span>}
           </div>
 
           {/* Resource Allocation */}
@@ -156,22 +204,27 @@ export default function Contact() {
                 <button 
                   key={alloc} type="button" 
                   className={`btn-selectable ${formData.allocation === alloc ? 'selected' : ''}`}
-                  onClick={() => handleSelect('allocation', alloc)}
+                  onClick={() => { handleSelect('allocation', alloc); setErrors(prev => ({ ...prev, allocation: null, customAllocation: null })); }}
                 >{alloc}</button>
               ))}
             </div>
             <div style={{ position: 'relative', marginTop: 'var(--spacing-md)' }}>
-              <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--on-surface-variant)' }}>$</span>
+              <span style={{ position: 'absolute', left: '16px', top: '14px', color: 'var(--on-surface-variant)' }}>$</span>
               <input 
-                className="input-field" 
+                className={`input-field ${errors.customAllocation ? 'error-border' : ''}`} 
                 style={{ paddingLeft: '32px' }}
                 placeholder="Custom Amount" 
                 type="text" 
                 name="customAllocation"
                 value={formData.customAllocation}
-                onChange={(e) => setFormData(prev => ({ ...prev, customAllocation: e.target.value, allocation: 'Custom' }))}
+                onChange={(e) => {
+                  setFormData(prev => ({ ...prev, customAllocation: e.target.value, allocation: 'Custom' }));
+                  setErrors(prev => ({ ...prev, allocation: null, customAllocation: null }));
+                }}
               />
+              {errors.customAllocation && <span style={{ color: '#ff5c5c', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.customAllocation}</span>}
             </div>
+            {errors.allocation && <span style={{ color: '#ff5c5c', fontSize: '12px', display: 'block', marginTop: '8px' }}>{errors.allocation}</span>}
           </div>
 
           {/* Technical Requirements */}
@@ -181,15 +234,15 @@ export default function Contact() {
               Technical Requirements & Blueprint
             </h3>
             <textarea 
-              className="input-field" 
+              className={`input-field ${errors.details ? 'error-border' : ''}`} 
               name="details"
               value={formData.details}
-              onChange={handleChange}
+              onChange={(e) => { handleChange(e); setErrors(prev => ({ ...prev, details: null })); }}
               placeholder="Detail your functionality needs, aesthetic preferences, and any timeline constraints..." 
               rows="6" 
-              required
               style={{ resize: 'vertical' }}
             ></textarea>
+            {errors.details && <span style={{ color: '#ff5c5c', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.details}</span>}
           </div>
 
           {/* Submit */}
@@ -281,6 +334,9 @@ export default function Contact() {
           transition: all 0.3s;
           font-family: var(--font-label);
           font-size: 14px;
+        }
+        .error-border {
+          border-color: #ff5c5c !important;
         }
         .btn-selectable:hover {
           border-color: var(--secondary);

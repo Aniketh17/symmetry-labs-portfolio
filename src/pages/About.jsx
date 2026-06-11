@@ -91,12 +91,7 @@ export default function About() {
             isLeft={true}
             icon="handshake"
             title="The Convergence"
-            content={
-              <>
-                Together, they realized that brilliant engineering without rigorous testing is just a prototype, and testing without brilliant engineering is a bottleneck. Symmetry Labs delivers digital experiences crafted by experts, where every line of code is challenged, and every interaction is perfected.<br/><br/>
-                Want to explore the origins of our logic? <a href="https://keth-portfolio.netlify.app/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--secondary)', textDecoration: 'underline' }}>Visit The Developer's Personal Archive</a>.
-              </>
-            }
+            content="Together, they realized that brilliant engineering without rigorous testing is just a prototype, and testing without brilliant engineering is a bottleneck. Symmetry Labs delivers digital experiences crafted by experts, where every line of code is challenged, and every interaction is perfected."
           />
         </div>
       </div>

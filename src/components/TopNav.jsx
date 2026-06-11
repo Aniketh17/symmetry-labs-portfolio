@@ -23,9 +23,11 @@ export default function TopNav() {
       navigate('/');
       setTimeout(() => {
         document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+      }, 500);
     } else {
-      document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+      }, 400);
     }
   };
 

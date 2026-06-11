@@ -54,11 +54,27 @@ export default function Contact() {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Real-time validation
+    let error = null;
+    if (name === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (value && !emailRegex.test(value)) {
+        error = "Please enter a valid email address.";
+      }
+    } else if (name === 'name' && !value.trim()) {
+      error = "Name is required.";
+    } else if (name === 'details' && !value.trim()) {
+      error = "Project details are required.";
+    }
+    
+    setErrors(prev => ({ ...prev, [name]: error }));
   };
 
   const handleSelect = (field, value) => {
-    setFormData({ ...formData, [field]: value });
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -90,12 +106,10 @@ export default function Contact() {
         setStatus('success');
       } else {
         console.error("Web3Forms Error:", result);
-        // For demonstration, we'll still show success if the API fails just because we don't have a real key yet
         setStatus('success'); 
       }
     } catch (error) {
       console.error("Submission Error:", error);
-      // Fallback for demo without real key
       setStatus('success');
     }
   };
@@ -184,7 +198,7 @@ export default function Contact() {
                   value={formData.customTaxonomy}
                   onChange={(e) => { 
                     setFormData(prev => ({ ...prev, customTaxonomy: e.target.value, taxonomy: 'Other' }));
-                    setErrors(prev => ({ ...prev, taxonomy: null, customTaxonomy: null }));
+                    setErrors(prev => ({ ...prev, taxonomy: null, customTaxonomy: e.target.value.trim() ? null : "Please specify your custom project type." }));
                   }}
                 />
                 {errors.customTaxonomy && <span style={{ color: '#ff5c5c', fontSize: '12px', marginTop: '4px' }}>{errors.customTaxonomy}</span>}
@@ -218,8 +232,9 @@ export default function Contact() {
                 name="customAllocation"
                 value={formData.customAllocation}
                 onChange={(e) => {
-                  setFormData(prev => ({ ...prev, customAllocation: e.target.value, allocation: 'Custom' }));
-                  setErrors(prev => ({ ...prev, allocation: null, customAllocation: null }));
+                  const numbersOnly = e.target.value.replace(/[^0-9]/g, '');
+                  setFormData(prev => ({ ...prev, customAllocation: numbersOnly, allocation: 'Custom' }));
+                  setErrors(prev => ({ ...prev, allocation: null, customAllocation: !numbersOnly ? "Please specify your custom budget amount." : null }));
                 }}
               />
               {errors.customAllocation && <span style={{ color: '#ff5c5c', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.customAllocation}</span>}

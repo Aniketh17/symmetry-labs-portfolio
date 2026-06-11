@@ -36,10 +36,6 @@ export default function Portfolio() {
             <span className="label-sm" style={{ color: 'var(--secondary)', marginBottom: 'var(--spacing-sm)', display: 'block' }}>Portfolio</span>
             <h2 className="display-lg-mobile md-display-lg" style={{ color: 'var(--on-surface)' }}>Selected Works</h2>
           </div>
-          <a href="#" className="label-md" style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', color: 'var(--on-surface)' }}>
-            <span style={{ borderBottom: '1px solid var(--on-surface)', paddingBottom: '2px' }}>View Full Archive</span>
-            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_right_alt</span>
-          </a>
         </motion.div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-xxl)' }}>
